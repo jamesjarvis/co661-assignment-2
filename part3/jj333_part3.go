@@ -7,18 +7,21 @@ import (
 )
 
 /*
-2.b:
+3.b:
 
-The only case of starvation I can find, is in the case of all the patients
-being initialised in the time period between when the dentist checks
-for patients in the queue, and going into it's sleeping state.
-If this happens, then the patients will first check if the dentist is sleeping,
-find that the dentist is not, and then move into the queue.
-But, the dentist would have checked the queue, found nobody in it, and then
-gone to sleep.
+The only case of deadlock I can find that has been fixed in 3 but not 2,
+is the case mentioned in 2.b where the doctor goes into a sleeping state
+while the patients are being added to the queue.
 
-In this case, the situation will remain in starvation, until another patient
-enters, and triggers the dentist to wake up.
+This was fixed, by introducing a "ready" channel, to signal that the dentist
+is ready to recieve patients.
+
+The introduction of the assistant doesn't help a lot in this case, as the low
+priority patients actually get pushed further down the queue, since the placement
+on the queue is no longer blocked by how fast the dentist is.
+If the "main" queue is given a length greater than or equal to the high priority queue,
+then the low priority patients will just be placed directly after the high priority
+patients, which is debatably unfair, since their actual appointment time will be much later.
 
 */
 
