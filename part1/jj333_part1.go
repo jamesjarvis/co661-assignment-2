@@ -30,7 +30,7 @@ func dentist(wait <-chan chan int, dent <-chan chan int) {
 
 func dentistSeeingPatient(patient chan<- int) {
 	r := rand.New(rand.NewSource(99))
-	randomTime := r.Intn(6)
+	randomTime := r.Intn(3)
 	patient <- 0                                        // Indicates the patient is being seen
 	time.Sleep(time.Duration(randomTime) * time.Second) // Indicates how long the treatment takes
 	patient <- 0                                        // The patient has been seen
@@ -72,5 +72,5 @@ func main() {
 		go patient(wait, dent, i)
 		time.Sleep(1 * time.Second)
 	}
-	time.Sleep(100000 * time.Millisecond)
+	time.Sleep(50 * time.Second)
 }
