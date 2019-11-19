@@ -6,6 +6,22 @@ import (
 	"time"
 )
 
+/*
+2.b:
+
+The only case of starvation I can find, is in the case of all the patients
+being initialised in the time period between when the dentist checks
+for patients in the queue, and going into it's sleeping state.
+If this happens, then the patients will first check if the dentist is sleeping,
+find that the dentist is not, and then move into the queue.
+But, the dentist would have checked the queue, found nobody in it, and then
+gone to sleep.
+
+In this case, the situation will remain in starvation, until another patient
+enters, and triggers the dentist to wake up.
+
+*/
+
 func printDentist(message string) {
 	log.Printf("Dentist %s", message)
 }
